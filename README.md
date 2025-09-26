@@ -3,7 +3,7 @@
 An interactive web application that transforms your words into dynamic, animated art.  
 This project is a creative sandbox for visualizing text with physics-based and artistic animations, all responding to your input in real-time.
 
-**[➡️ Live Demo ⬅️](https://codepen.io/muqtadirkhan/pen/VYeeyWN)**
+**[➡️ Live Demo ⬅️]([https://codepen.io/muqtadirkhan/pen/VYeeyWN](https://muqtadirkhxn.github.io/Kinetic-Text-Playground/))**
 
 ---
 
