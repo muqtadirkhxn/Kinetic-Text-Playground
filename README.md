@@ -1,41 +1,50 @@
 # ✨ Kinetic Text Playground ✨
 
-An interactive web application that transforms your words into dynamic, animated art. This project is a creative sandbox for visualizing text with various physics-based and artistic animations, all responding to your input in real-time.
+An interactive web application that transforms your words into dynamic, animated art.  
+This project is a creative sandbox for visualizing text with physics-based and artistic animations, all responding to your input in real-time.
 
-**[➡️ Live Demo Link Here ⬅️]** `[PASTE YOUR LIVE DEMO LINK HERE]`
+**[➡️ Live Demo ⬅️](https://codepen.io/muqtadirkhan/pen/VYeeyWN)**
 
-
+---
 
 ## 🎨 Features
+- **Real-Time Text Input:** Type anything and see it instantly animated.
+- **Multiple Animation Modes:**  
+  - Swarm & Repel: Letters follow or flee your mouse.  
+  - Gravity: Bouncing physics for each letter.  
+  - 3D Rotate: Rotate in 3D space.  
+  - Rain: Letters fall continuously.  
+  - Wave: Smooth sine wave animation.  
+- **Full Customization:** Change font family, size, background, and text colors.  
+- **Interactive Controls:** Animations react to your mouse movements and clicks.  
+- **Responsive Design:** Works beautifully on desktop and mobile.  
 
-- **Real-Time Text Input:** Type anything you want and watch it come to life instantly.
-- **Multiple Animation Modes:** Choose from a variety of effects, including:
-  - **Swarm & Repel:** Letters that follow or flee your mouse cursor.
-  - **Gravity:** Realistic bouncing physics for each letter.
-  - **3D Rotate:** The entire block of text rotates in 3D space.
-  - **Rain:** Letters fall from the sky in a continuous loop.
-  - **Wave:** A smooth, satisfying sine wave animation.
-- **Full Customization:** Easily change the font family, font size, and colors for both the text and the background.
-- **Interactive Controls:** The animations are fully interactive, responding to your mouse movements and clicks.
-- **Responsive Design:** The entire interface works beautifully on both desktop and mobile devices.
+---
 
-## 🚀 Tech Stack
-
-This project was built from scratch using core front-end technologies:
-
+## 🛠️ Tech Stack
 - **HTML5**
 - **CSS3**
-- **Bootstrap 5** (For the responsive control panel)
-- **Vanilla JavaScript (ES6)** (For all the animation logic and DOM manipulation)
+- **Bootstrap 5** – for responsive control panel
+- **Vanilla JavaScript (ES6)** – animation logic & DOM manipulation  
 
-## 🔧 How to Use
+---
 
-1.  Open the live demo link.
-2.  Type any text into the "Your Text" input field.
-3.  Select an animation style from the dropdown menu.
-4.  Use the sliders and color pickers to customize the appearance.
-5.  Move your mouse over the screen to interact with the animations!
+## 🚀 How to Use
+1. Open the [Live Demo](https://codepen.io/muqtadirkhan/pen/VYeeyWN).  
+2. Type text into the **Your Text** field.  
+3. Pick an animation style.  
+4. Adjust font size and colors with the controls.  
+5. Move your mouse to interact with the animation.  
+
+---
+
+## 🖼️ Preview
+<img width="1919" height="948" alt="image" src="https://github.com/user-attachments/assets/bb8a44e2-89fc-4f3f-af2e-d83a7c0ddd0a" />
+
 
 ## 📜 License
+This project is open source under the **MIT License**.
 
-This project is open source and available under the **MIT License**.
+---
+
+© 2025 Muqtadir Khan
