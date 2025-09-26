@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kinetic Text Playground</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Roboto+Mono:wght@700&family=Lobster&family=Press+Start+2P&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 2rem 1rem;
+            background-color: #1e1e1e;
+            color: #f0f0f0;
+            font-family: var(--font-family);
+            cursor: default;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        #animation-canvas {
+            --canvas-bg: #111111;
+            --canvas-text: #eeeeee;
+
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            height: 60vh;
+            border: 1px solid #444;
+            border-radius: 8px;
+            perspective: 800px;
+            cursor: crosshair;
+            overflow: hidden;
+            background-color: var(--canvas-bg);
+        }
+
+        .letter {
+            position: absolute;
+            font-weight: 700;
+            user-select: none;
+            transition: color 0.3s ease, transform 0.1s linear;
+            color: var(--canvas-text);
+        }
+
+        .controls {
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 1000px;
+            font-size: 0.9rem;
+        }
+
+        .controls .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .controls .col-lg-6,
+        .controls .col-lg-3,
+        .controls .col-lg-9,
+        .controls .col-lg-1,
+        .controls .col-6,
+        .controls .col-4 {
+            flex: 1 1 180px;
+            min-width: 140px;
+        }
+
+        .form-label {
+            margin-bottom: 0.25rem;
+            font-size: 0.85rem;
+        }
+
+        input[type="text"],
+        select,
+        input[type="range"],
+        input[type="color"] {
+            font-size: 0.85rem;
+            padding: 0.3rem 0.5rem;
+        }
+
+        #font-size-slider {
+            width: 100%;
+            margin-top: 0.2rem;
+        }
+
+        #reset-button {
+            font-size: 0.85rem;
+            padding: 0.45rem 0.8rem;
+        }
+
+        /* Media Queries for Smaller Screens */
+        @media (max-width: 767px) {
+            body {
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .controls {
+                padding: 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            .form-label {
+                font-size: 0.75rem;
+            }
+
+            input[type="text"],
+            select {
+                font-size: 0.75rem;
+                padding: 0.25rem 0.4rem;
+            }
+
+            .controls .col-lg-1,
+            .controls .col-lg-3,
+            .controls .col-lg-6,
+            .controls .col-lg-9,
+            .controls .col-6,
+            .controls .col-4 {
+                min-width: 45%;
+            }
+
+            #reset-button {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Kinetic Text Playground</h1>
+
+    <div id="animation-canvas"></div>
+
+    <div class="controls shadow-lg">
+        <div class="row g-3 align-items-center">
+            <div class="col-12 col-md-6">
+                <label for="text-input" class="form-label">Your Text</label>
+                <input type="text" class="form-control form-control-sm bg-dark text-white border-secondary"
+                    id="text-input" value="Muqtadir">
+            </div>
+            <div class="col-6 col-md-3">
+                <label for="animation-select" class="form-label">Animation Style</label>
+                <select id="animation-select" class="form-select form-select-sm bg-dark text-white border-secondary">
+                    <option value="static" selected>Static</option>
+                    <option value="swarm">Swarm</option>
+                    <option value="repel">Repel</option>
+                    <option value="gravity">Gravity</option>
+                    <option value="wave">Wave</option>
+                    <option value="rain">Rain</option>
+                    <option value="explode">Explode</option>
+                    <option value="rotate3d">3D Rotate</option>
+                </select>
+            </div>
+            <div class="col-6 col-md-3">
+                <label for="font-family-select" class="form-label">Font Family</label>
+                <select id="font-family-select" class="form-select form-select-sm bg-dark text-white border-secondary">
+                    <option value="'Roboto Mono', monospace" selected>Roboto Mono</option>
+                    <option value="'Poppins', sans-serif">Poppins</option>
+                    <option value="'Lobster', cursive">Lobster</option>
+                    <option value="'Press Start 2P', cursive">Pixel</option>
+                </select>
+            </div>
+
+            <!-- Font size + BG + Text + Reset in one row -->
+            <div class="col-12 d-flex align-items-center">
+                <div class="flex-grow-1 me-3">
+                    <label for="font-size-slider" class="form-label">Font Size</label>
+                    <input type="range" class="form-range" id="font-size-slider" min="10" max="250" value="80">
+                </div>
+                <div class="text-center me-2">
+                    <label for="bg-color-picker" class="form-label">BG</label>
+                    <input type="color" class="form-control form-control-sm form-control-color mx-auto"
+                        id="bg-color-picker" value="#111111">
+                </div>
+                <div class="text-center me-2">
+                    <label for="text-color-picker" class="form-label">Text</label>
+                    <input type="color" class="form-control form-control-sm form-control-color mx-auto"
+                        id="text-color-picker" value="#eeeeee">
+                </div>
+                <div>
+                    <label class="form-label invisible">Reset</label>
+                    <button class="btn btn-sm btn-outline-light w-100" id="reset-button">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const canvas = document.getElementById('animation-canvas');
+        const textInput = document.getElementById('text-input');
+        const animationSelect = document.getElementById('animation-select');
+        const fontFamilySelect = document.getElementById('font-family-select');
+        const fontSizeSlider = document.getElementById('font-size-slider');
+        const bgColorPicker = document.getElementById('bg-color-picker');
+        const textColorPicker = document.getElementById('text-color-picker');
+        const resetButton = document.getElementById('reset-button');
+
+        let letters = [];
+        let mouse = { x: canvas.clientWidth / 2, y: canvas.clientHeight / 2 };
+        let currentAnimation = 'static';
+
+        class Letter {
+            constructor(char, x, y, size) {
+                this.char = char;
+                this.x = x;
+                this.y = y;
+                this.originX = x;
+                this.originY = y;
+                this.vx = 0;
+                this.vy = 0;
+                this.size = size;
+                this.rotX = 0;
+                this.rotY = 0;
+                this.isResetting = false;
+
+                this.element = document.createElement('span');
+                this.element.classList.add('letter');
+                this.element.innerHTML = char === ' ' ? '&nbsp;' : char;
+                this.element.style.fontSize = `${this.size}px`;
+                this.element.style.fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family');
+                canvas.appendChild(this.element);
+            }
+
+            update() {
+                if (this.isResetting) {
+                    const dx = this.originX - this.x;
+                    const dy = this.originY - this.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 0.1) {
+                        this.isResetting = false;
+                        this.x = this.originX;
+                        this.y = this.originY;
+                        this.vx = 0;
+                        this.vy = 0;
+                    } else {
+                        this.vx += dx * 0.1;
+                        this.vy += dy * 0.1;
+                        this.vx *= 0.9;
+                        this.vy *= 0.9;
+                        this.x += this.vx;
+                        this.y += this.vy;
+                    }
+                } else {
+                    this.rotX = 0;
+                    this.rotY = 0;
+                    switch (currentAnimation) {
+                        case 'static':
+                        case 'explode': this.updateExplode(); break;
+                        case 'swarm': this.updateSwarm(1); break;
+                        case 'repel': this.updateSwarm(-1); break;
+                        case 'gravity': this.updateGravity(); break;
+                        case 'wave': this.updateWave(); break;
+                        case 'rain': this.updateRain(); break;
+                        case 'rotate3d': this.updateRotate3D(); break;
+                    }
+                }
+                this.element.style.transform = `translate(${this.x}px, ${this.y}px) rotateX(${this.rotX}deg) rotateY(${this.rotY}deg)`;
+            }
+
+            updateSwarm(forceMultiplier = 1) {
+                const dx = mouse.x - this.x, dy = mouse.y - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy) || 1;
+                this.vx += (dx / distance) * 0.5 * forceMultiplier;
+                this.vy += (dy / distance) * 0.5 * forceMultiplier;
+                this.vx *= 0.95;
+                this.vy *= 0.95;
+                this.x += this.vx;
+                this.y += this.vy;
+            }
+
+            updateGravity() {
+                this.vy += 0.5;
+                this.vx *= 0.98;
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.y + this.size / 2 > canvas.clientHeight) {
+                    this.y = canvas.clientHeight - this.size / 2;
+                    this.vy *= -0.8;
+                }
+            }
+
+            updateWave() {
+                // Slowed down by increasing time divisor and reducing wave amplitude
+                const time = Date.now() * 0.002; // slower than 0.005
+                this.y = this.originY + Math.sin(time + this.originX * 0.05) * 25; // was 50
+                this.x = this.originX + Math.cos(time + this.originY * 0.05) * 10; // was 20
+            }
+
+            updateRain() {
+                // Slower fall speed
+                this.vy = 3; // was 10
+                this.y += this.vy;
+                if (this.y > canvas.clientHeight + this.size) {
+                    this.y = -this.size;
+                    this.x = Math.random() * canvas.clientWidth;
+                }
+            }
+
+            updateRotate3D() {
+                const maxRotation = 45;
+                this.rotY = (mouse.x / canvas.clientWidth - 0.5) * maxRotation * 2;
+                this.rotX = -(mouse.y / canvas.clientHeight - 0.5) * maxRotation * 2;
+                this.x += (this.originX - this.x) * 0.1;
+                this.y += (this.originY - this.y) * 0.1;
+            }
+
+            updateExplode() {
+                const dx = this.originX - this.x, dy = this.originY - this.y;
+                this.vx += dx * 0.05;
+                this.vy += dy * 0.05;
+                this.vx *= 0.95;
+                this.vy *= 0.95;
+                this.x += this.vx;
+                this.y += this.vy;
+            }
+
+            explode() {
+                const angle = Math.random() * Math.PI * 2;
+                const force = 20 + Math.random() * 20;
+                this.vx = Math.cos(angle) * force;
+                this.vy = Math.sin(angle) * force;
+            }
+
+            reset() {
+                this.isResetting = true;
+            }
+        }
+
+        function createText() {
+            canvas.innerHTML = '';
+            letters = [];
+
+            const text = textInput.value;
+            const fontSize = parseInt(fontSizeSlider.value);
+
+            const tempSpan = document.createElement('span');
+            tempSpan.style.position = 'absolute';
+            tempSpan.style.visibility = 'hidden';
+            tempSpan.style.fontSize = `${fontSize}px`;
+            tempSpan.style.fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family');
+            document.body.appendChild(tempSpan);
+
+            let totalWidth = 0;
+            const charWidths = [];
+
+            for (const char of text) {
+                tempSpan.innerHTML = char === ' ' ? '&nbsp;' : char;
+                const width = tempSpan.getBoundingClientRect().width;
+                charWidths.push(width);
+                totalWidth += width;
+            }
+
+            document.body.removeChild(tempSpan);
+
+            const startX = (canvas.clientWidth - totalWidth) / 2;
+            const startY = canvas.clientHeight / 2;
+            let currentX = startX;
+
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                const width = charWidths[i];
+                letters.push(new Letter(char, currentX, startY, fontSize));
+                currentX += width;
+            }
+        }
+
+        function animate() {
+            letters.forEach(letter => letter.update());
+            requestAnimationFrame(animate);
+        }
+
+        canvas.addEventListener('mousemove', (e) => {
+            mouse.x = e.offsetX;
+            mouse.y = e.offsetY;
+        });
+
+        canvas.addEventListener('click', () => {
+            if (currentAnimation === 'explode') letters.forEach(l => l.explode());
+        });
+
+        textInput.addEventListener('input', createText);
+        fontSizeSlider.addEventListener('input', createText);
+        window.addEventListener('resize', createText);
+        animationSelect.addEventListener('change', (e) => {
+            currentAnimation = e.target.value;
+        });
+
+        fontFamilySelect.addEventListener('change', (e) => {
+            document.documentElement.style.setProperty('--font-family', e.target.value);
+            createText();
+        });
+
+        resetButton.addEventListener('click', () => letters.forEach(l => l.reset()));
+
+        bgColorPicker.addEventListener('input', (e) => canvas.style.setProperty('--canvas-bg', e.target.value));
+        textColorPicker.addEventListener('input', (e) => canvas.style.setProperty('--canvas-text', e.target.value));
+
+        createText();
+        animate();
+    </script>
+
+    <footer class="text-center mt-4 mb-2 text-muted" style="font-size: 0.85rem;">
+        © 2025 Muqtadir Khan. All rights reserved.
+    </footer>
+</body>
+
+</html>
