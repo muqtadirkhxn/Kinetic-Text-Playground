@@ -30,7 +30,7 @@ This project is a creative sandbox for visualizing text with physics-based and a
 ---
 
 ## 🚀 How to Use
-1. Open the [Live Demo](https://codepen.io/muqtadirkhan/pen/VYeeyWN).  
+1. Open the [Live Demo](https://muqtadirkhxn.github.io/Kinetic-Text-Playground/).  
 2. Type text into the **Your Text** field.  
 3. Pick an animation style.  
 4. Adjust font size and colors with the controls.  
